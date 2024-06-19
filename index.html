@@ -16,10 +16,10 @@
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
+<!--       <div id="unity-warning"> </div>
+ --><!--       <div id="unity-footer">
+ --><!--         <div id="unity-webgl-logo"></div>
+ -->        <!-- <div id="unity-fullscreen-button"></div> -->
         <div id="unity-build-title">demoPlat2d</div>
       </div>
     </div>
@@ -29,8 +29,8 @@
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
+/*       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+ */      var warningBanner = document.querySelector("#unity-warning");
 
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
@@ -76,7 +76,7 @@
       // the canvas DOM size and WebGL render target sizes yourself.
       // config.matchWebGLToCanvasSize = false;
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      /* if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
 
         var meta = document.createElement('meta');
@@ -96,7 +96,34 @@
 
         canvas.style.width = "960px";
         canvas.style.height = "600px";
-      }
+      } */
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    // Configuración para dispositivos móviles:
+    var meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, initial-scale=1.0, user-scalable=no';
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
+    container.className = "unity-mobile";
+    canvas.className = "unity-mobile";
+
+    // Calcula dimensiones basadas en el aspect ratio vertical:
+    var aspectRatio = 760 / 960; // Aspect ratio del canvas vertical
+    var width = window.innerWidth;
+    var height = width / aspectRatio;
+    if (height > window.innerHeight) {
+        height = window.innerHeight;
+        width = height * aspectRatio;
+    }
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+} else {
+    // Configuración para escritorio con aspecto vertical:
+    canvas.style.width = "760px";
+    canvas.style.height = "960px";
+}
+
+
 
       loadingBar.style.display = "block";
 
@@ -107,9 +134,9 @@
           progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
+                /* fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
-                };
+                }; */
               }).catch((message) => {
                 alert(message);
               });
